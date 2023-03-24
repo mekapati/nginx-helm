@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: springback
+  labels:
+    role: pg
+    env: demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      role: pg
+  template:
+    metadata:
+      labels:
+        role: pg
+    spec:
+      containers:
+      - name: pg
+        image: malyadr/greenboot:1
+        env:   
+           - name: SPRING_DATASOURCE_URL
+             value: jdbc:postgresql://database:5432/jobs
+           - name: SPRING_DATASOURCE_USERNAME
+             value: jobs_usr    
+           - name: SPRING_DATASOURCE_PASSWORD
+             value: us3rs
+           - name: SPRING_JPA_HIBERNATE_DDL_AUTO
+             value: update
+        ports:
+        - containerPort: 8080
